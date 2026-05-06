@@ -9,13 +9,13 @@ load_dotenv(dotenv_path=".env")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL and DATABASE_URL.startswith("sqlite"):
-    print("⚠️ Using SQLite database")
+    print("Using SQLite database")
     engine = create_engine(
         DATABASE_URL,
         connect_args={"check_same_thread": False}
     )
 elif DATABASE_URL:
-    print("✅ Using PostgreSQL (shared team database)")
+    print("Using PostgreSQL (shared team database)")
     # Supabase/Production often requires SSL
     engine = create_engine(
         DATABASE_URL,
@@ -23,7 +23,7 @@ elif DATABASE_URL:
         connect_args={"sslmode": "require"} if "supabase" in DATABASE_URL or "sslmode" not in DATABASE_URL else {}
     )
 else:
-    print("⚠️ DATABASE_URL not set. Falling back to SQLite.")
+    print("DATABASE_URL not set. Falling back to SQLite.")
     engine = create_engine(
         "sqlite:///./local.db",
         connect_args={"check_same_thread": False}

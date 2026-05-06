@@ -82,6 +82,14 @@ export default function MyRequestsPage() {
                   {/* Status */}
                   <div className="flex flex-col items-end gap-2 ml-4">
                     <StatusBadge status={req.status} />
+                    {req.status === "accepted" && (
+                      <a
+                        href={`/dashboard/chat/${reqId}`}
+                        className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors"
+                      >
+                        Chat & Call
+                      </a>
+                    )}
                   </div>
                 </div>
 

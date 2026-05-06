@@ -8,7 +8,7 @@ from app.db.database import get_db
 from app.db.models import TaskRequest, Task, User
 from app.api.dependencies import get_current_user
 
-router = APIRouter(prefix="/api/requests", tags=["Requests"])
+router = APIRouter(prefix="/requests", tags=["Requests"])
 
 
 # ── Schemas ──────────────────────────────────────────────────────────────────

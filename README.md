@@ -79,10 +79,14 @@ EMAIL_PASS=qqjo rbzb ypkq ygvg
 ## Auth
 - POST /auth/signup
 - POST /auth/login
-- POST /auth/send-otp
+- POST /auth/request-otp
 - POST /auth/verify-otp
+- POST /auth/request-password-reset
+- POST /auth/reset-password
 ## Tasks
-- POST /tasks
+- POST /api/tasks/
+- GET /api/tasks/feed
+- GET /api/tasks/my
 - GET /me
 
 # 🛡 Security Features

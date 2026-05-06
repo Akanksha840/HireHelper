@@ -11,6 +11,7 @@ from .schemas import (
 from .service import create_user, authenticate_user, send_otp_email, verify_otp, send_password_reset_otp, reset_password
 from app.api.dependencies import get_current_user
 from app.core.security import verify_password, hash_password
+from app.core.file_upload import save_image
 from pydantic import BaseModel
 import cloudinary
 import cloudinary.uploader
@@ -135,18 +136,33 @@ async def upload_profile_picture(
     db: Session = Depends(get_db),
 ):
     try:
-        contents = await file.read()
-        result = cloudinary.uploader.upload(
-            contents,
-            folder="hire_helper/profile_pictures",
-            public_id=f"user_{current_user.id}",
-            overwrite=True,
-            resource_type="image",
-        )
-        url = result.get("secure_url")
+        cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME")
+        api_key = os.getenv("CLOUDINARY_API_KEY")
+        api_secret = os.getenv("CLOUDINARY_API_SECRET")
+
+        if not (cloud_name and api_key and api_secret):
+            # Fallback to local uploads when Cloudinary is not configured
+            saved_path = save_image(file)
+            host = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+            url = f"{host}/{saved_path.replace('\\', '/')}"
+        else:
+            contents = await file.read()
+            result = cloudinary.uploader.upload(
+                contents,
+                folder="hire_helper/profile_pictures",
+                public_id=f"user_{current_user.id}",
+                overwrite=True,
+                resource_type="image",
+            )
+            url = result.get("secure_url")
+            if not url:
+                raise HTTPException(status_code=500, detail="Upload failed: Cloudinary returned no secure_url")
+
         current_user.profile_picture = url
         db.commit()
         return {"profile_picture": url}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 

@@ -111,11 +111,11 @@ Do not share it with anyone.
             server.login(EMAIL_USER, EMAIL_PASS)
             server.send_message(msg)
 
-        print("✅ OTP stored in otp_verifications & email sent")
+        print("OTP stored in otp_verifications & email sent")
         return True
 
     except Exception as e:
-        print(f"❌ Failed to send OTP email: {e}")
+        print(f"Failed to send OTP email: {e}")
         return False
 
 
@@ -198,11 +198,11 @@ If you did not request this, please ignore this email.
             server.login(EMAIL_USER, EMAIL_PASS)
             server.send_message(msg)
 
-        print("✅ Password Reset OTP sent")
+        print("Password Reset OTP sent")
         return True
 
     except Exception as e:
-        print(f"❌ Failed to send Password Reset email: {e}")
+        print(f"Failed to send Password Reset email: {e}")
         return False
 
 

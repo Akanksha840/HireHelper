@@ -11,6 +11,8 @@ from app.db import models
 from app.api.auth.routes import router as auth_router
 from app.api.tasks.routes import router as task_router
 from app.api.requests.routes import router as requests_router
+from app.api.chat.routes import router as chat_router
+from app.api.calls.routes import router as calls_router
 from app.api.dependencies import get_current_user
 
 app = FastAPI(
@@ -70,7 +72,7 @@ def run_migrations():
                 # SQLite doesn't have a native 'IF NOT EXISTS' for columns
                 conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {col_type}"))
                 conn.commit()
-                print(f"✅ Migration: added '{column}' to '{table}'")
+                print(f"Migration: added '{column}' to '{table}'")
             except Exception:
                 # If it fails, the column likely already exists, so we skip silently
                 pass
@@ -83,7 +85,9 @@ from fastapi.staticfiles import StaticFiles
 # Routers
 app.include_router(auth_router)       # /auth/*
 app.include_router(task_router, prefix="/api")  # /api/tasks/*
-app.include_router(requests_router)   # /api/requests/*
+app.include_router(requests_router, prefix="/api")   # /api/requests/*
+app.include_router(chat_router, prefix="/api")   # /api/chat/*
+app.include_router(calls_router, prefix="/api")   # /api/calls/*
 
 # Mount uploads directory to serve static images
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

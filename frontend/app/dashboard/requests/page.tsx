@@ -222,6 +222,16 @@ export default function RequestsPage() {
                             Decline
                           </button>
                         </>
+                      ) : req.status === "accepted" ? (
+                        <div className="flex items-center gap-2">
+                          <StatusBadge status={req.status} />
+                          <a
+                            href={`/dashboard/chat/${reqId}`}
+                            className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-medium transition-colors"
+                          >
+                            Chat & Call
+                          </a>
+                        </div>
                       ) : (
                         <StatusBadge status={req.status} />
                       )}
