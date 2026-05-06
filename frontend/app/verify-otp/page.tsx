@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useRef, useEffect } from 'react'
 
 export default function VerifyOTP() {
